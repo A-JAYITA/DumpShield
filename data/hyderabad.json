@@ -1,0 +1,16 @@
+{
+  "city": "Hyderabad",
+  "areas": [
+    { "name": "Banjara Hills", "type": "Residential/Commercial", "cleanliness_score": 85, "risk_level": "Low" },
+    { "name": "HITEC City", "type": "IT Hub", "cleanliness_score": 90, "risk_level": "Low" },
+    { "name": "Gachibowli", "type": "IT/Residential", "cleanliness_score": 78, "risk_level": "Medium" },
+    { "name": "Ameerpet", "type": "Commercial", "cleanliness_score": 60, "risk_level": "High" },
+    { "name": "Charminar", "type": "Heritage/Commercial", "cleanliness_score": 65, "risk_level": "High" },
+    { "name": "Jubilee Hills", "type": "Residential", "cleanliness_score": 88, "risk_level": "Low" }
+  ],
+  "hotspots": [
+    { "lat": 17.4447, "lng": 78.3483, "name": "Gachibowli Junction" },
+    { "lat": 17.4065, "lng": 78.4772, "name": "Charminar Area" },
+    { "lat": 17.4486, "lng": 78.4468, "name": "Ameerpet Metro" }
+  ]
+}
