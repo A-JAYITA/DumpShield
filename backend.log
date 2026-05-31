@@ -1,0 +1,18 @@
+INFO:     Started server process [49066]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:48526 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38464 - "GET /api/v1/map/hotspots HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33352 - "GET /api/v1/map/hotspots HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33352 - "GET /api/v1/map/hotspots HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38184 - "GET /api/v1/map/hotspots HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38184 - "GET /api/v1/map/hotspots HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56860 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56860 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56864 - "GET /docs HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56864 - "GET /openapi.json HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51156 - "GET /api/v1/map/hotspots HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51156 - "GET /api/v1/map/hotspots HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49394 - "GET /api/v1/map/hotspots HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49394 - "GET /api/v1/map/hotspots HTTP/1.1" 200 OK

@@ -23,6 +23,7 @@ class Hotspot(BaseModel):
     lng: float
     name: str
     risk_score: float
+    garbage_percentage: float  # Added field
     status: str  # "active", "predicted", "cleaned"
     severity: str # "high", "medium", "low"
 
@@ -43,11 +44,22 @@ class VerificationResult(BaseModel):
 
 # Mock Data
 MOCK_HOTSPOTS = [
-    {"id": 1, "lat": 17.4447, "lng": 78.3483, "name": "Gachibowli Junction", "risk_score": 0.85, "status": "active", "severity": "high"},
-    {"id": 2, "lat": 17.4065, "lng": 78.4772, "name": "Charminar Area", "risk_score": 0.65, "status": "predicted", "severity": "medium"},
-    {"id": 3, "lat": 17.4486, "lng": 78.4468, "name": "Ameerpet Metro", "risk_score": 0.92, "status": "active", "severity": "high"},
-    {"id": 4, "lat": 17.3850, "lng": 78.4867, "name": "Koti Market", "risk_score": 0.45, "status": "cleaned", "severity": "low"},
-    {"id": 5, "lat": 17.4375, "lng": 78.4482, "name": "Punjagutta Flyover", "risk_score": 0.78, "status": "predicted", "severity": "high"},
+    {"id": 1, "lat": 17.4447, "lng": 78.3483, "name": "Gachibowli Junction", "risk_score": 0.85, "garbage_percentage": 75.5, "status": "active", "severity": "high"},
+    {"id": 2, "lat": 17.4065, "lng": 78.4772, "name": "Charminar Area", "risk_score": 0.65, "garbage_percentage": 42.0, "status": "predicted", "severity": "medium"},
+    {"id": 3, "lat": 17.4486, "lng": 78.4468, "name": "Ameerpet Metro", "risk_score": 0.92, "garbage_percentage": 88.4, "status": "active", "severity": "high"},
+    {"id": 4, "lat": 17.3850, "lng": 78.4867, "name": "Koti Market", "risk_score": 0.45, "garbage_percentage": 15.2, "status": "cleaned", "severity": "low"},
+    {"id": 5, "lat": 17.4375, "lng": 78.4482, "name": "Punjagutta Flyover", "risk_score": 0.78, "garbage_percentage": 62.1, "status": "predicted", "severity": "high"},
+    {"id": 6, "lat": 17.4239, "lng": 78.4519, "name": "Banjara Hills Rd 12", "risk_score": 0.35, "garbage_percentage": 10.5, "status": "cleaned", "severity": "low"},
+    {"id": 7, "lat": 17.4933, "lng": 78.3914, "name": "Kukatpally Housing Board", "risk_score": 0.88, "garbage_percentage": 79.8, "status": "active", "severity": "high"},
+    {"id": 8, "lat": 17.3616, "lng": 78.4747, "name": "Old City Chowmahalla", "risk_score": 0.72, "garbage_percentage": 55.4, "status": "active", "severity": "medium"},
+    {"id": 9, "lat": 17.4435, "lng": 78.4983, "name": "Secunderabad Station", "risk_score": 0.95, "garbage_percentage": 92.1, "status": "active", "severity": "high"},
+    {"id": 10, "lat": 17.4344, "lng": 78.3844, "name": "HITEC City Phase 2", "risk_score": 0.55, "garbage_percentage": 30.2, "status": "predicted", "severity": "medium"},
+    {"id": 11, "lat": 17.4121, "lng": 78.4321, "name": "Mehdipatnam Rythu Bazar", "risk_score": 0.82, "garbage_percentage": 68.5, "status": "active", "severity": "high"},
+    {"id": 12, "lat": 17.3989, "lng": 78.5012, "name": "Malakpet Market", "risk_score": 0.89, "garbage_percentage": 84.3, "status": "active", "severity": "high"},
+    {"id": 13, "lat": 17.4600, "lng": 78.3500, "name": "Madhapur Tech Park", "risk_score": 0.40, "garbage_percentage": 20.0, "status": "cleaned", "severity": "low"},
+    {"id": 14, "lat": 17.3700, "lng": 78.4500, "name": "Masab Tank", "risk_score": 0.70, "garbage_percentage": 50.0, "status": "predicted", "severity": "medium"},
+    {"id": 15, "lat": 17.4800, "lng": 78.4200, "name": "Balanagar Industrial", "risk_score": 0.98, "garbage_percentage": 95.0, "status": "active", "severity": "high"},
+    {"id": 16, "lat": 17.4100, "lng": 78.5200, "name": "Uppal Ring Road", "risk_score": 0.80, "garbage_percentage": 70.0, "status": "active", "severity": "high"},
 ]
 
 @app.get("/")
