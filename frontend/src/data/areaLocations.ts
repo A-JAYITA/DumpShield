@@ -76,7 +76,7 @@ export interface AnalysisResult {
   recommended_actions: string[];
 }
 
-export function simulateAnalysis(areaName: string): AnalysisResult {
+export function simulateAnalysis(_areaName: string): AnalysisResult {
   const wasteType = wasteTypes[Math.floor(Math.random() * wasteTypes.length)];
   const severityIdx = Math.floor(Math.random() * severities.length);
   const severity = severities[severityIdx];

@@ -22,7 +22,6 @@ import type {
   ForecastData,
   ImpactData,
   Recommendation,
-  VerificationData,
   TimelineEvent,
 } from '../types';
 

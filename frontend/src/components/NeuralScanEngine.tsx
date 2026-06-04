@@ -1,7 +1,6 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Upload,
   MapPin,
   Brain,
   AlertTriangle,
@@ -13,11 +12,9 @@ import {
   CheckCircle2,
   Camera,
   ChevronDown,
-  Loader2,
   Zap,
   ArrowRight,
   RotateCcw,
-  Image as ImageIcon,
 } from 'lucide-react';
 import { hyderabadAreas, simulateAnalysis } from '../data/areaLocations';
 import type { ScanResult, Hotspot } from '../types';
