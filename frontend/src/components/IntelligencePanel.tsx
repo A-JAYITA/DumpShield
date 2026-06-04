@@ -69,8 +69,8 @@ const defaultImpact: ImpactData = {
 };
 
 const defaultRecommendations: Recommendation[] = [
-  {
-    id: 1,
+ {
+   id: 1,
     title: 'Install Additional Bins',
     description: 'Deploy 3 smart waste bins at strategic locations to reduce illegal dumping by 40%.',
     risk_reduction: 35,
@@ -78,7 +78,7 @@ const defaultRecommendations: Recommendation[] = [
     priority: 'high',
     icon: '🗑️',
   },
-  {
+ {
     id: 2,
     title: 'Increase Collection Frequency',
     description: 'Upgrade from weekly to bi-weekly collection schedule for this zone.',
@@ -107,7 +107,7 @@ const defaultRecommendations: Recommendation[] = [
   },
 ];
 
-const defaultVerification: VerificationData = {
+/*const defaultVerification: VerificationData = {
   area_name: '',
   before_image: '',
   after_image: '',
@@ -128,7 +128,7 @@ const defaultVerification: VerificationData = {
     { date: 'May 18', title: 'Cleanup Completed', type: 'cleanup' },
     { date: 'May 19', title: 'Verification Approved', type: 'verification' },
   ],
-};
+};*/
 
 const defaultTimeline: TimelineEvent[] = [
   { id: 1, date: 'May 12', title: 'Illegal Dumping Detected', type: 'dumping' },
