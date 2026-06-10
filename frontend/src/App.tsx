@@ -1,28 +1,74 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
+  LogOut,
   Zap,
 } from 'lucide-react';
 import DigitalTwinMap from './components/DigitalTwinMap';
 import IntelligencePanel from './components/IntelligencePanel';
 import NeuralScanEngine from './components/NeuralScanEngine';
 import StartupExperience from './components/startup/StartupExperience';
+import ProtectedRoute from './components/auth/ProtectedRoute';
+import { useAuth } from './contexts/AuthContext';
+import { API_BASE_URL } from './services/api';
+import LoginPage from './pages/LoginPage';
+import SignUpPage from './pages/SignUpPage';
 import type { Hotspot } from './types';
 
+type AuthPath = '/' | '/login' | '/signup';
+
+const getAuthPath = (): AuthPath => {
+  if (window.location.pathname === '/login') {
+    return '/login';
+  }
+
+  if (window.location.pathname === '/signup') {
+    return '/signup';
+  }
+
+  return '/';
+};
+
 const App: React.FC = () => {
+  const { user, token, isAuthenticated, logout } = useAuth();
   const [hotspots, setHotspots] = useState<Hotspot[]>([]);
   const [activePage, setActivePage] = useState('home');
   const [selectedSpot, setSelectedSpot] = useState<Hotspot | null>(null);
   const [isStartupComplete, setIsStartupComplete] = useState(false);
+  const [authPath, setAuthPath] = useState<AuthPath>(() => getAuthPath());
 
   const handleAddHotspot = useCallback((hotspot: Hotspot) => {
     setHotspots((prev) => [...prev, hotspot]);
   }, []);
 
+  const navigateAuth = useCallback((path: AuthPath) => {
+    window.history.pushState({}, '', path);
+    setAuthPath(path);
+  }, []);
+
   useEffect(() => {
-    const host = window.location.hostname;
-    const apiUrl = `http://${host}:8000`;
-    fetch(`${apiUrl}/api/v1/map/hotspots`)
+    const syncPath = () => setAuthPath(getAuthPath());
+    window.addEventListener('popstate', syncPath);
+
+    return () => window.removeEventListener('popstate', syncPath);
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated && authPath !== '/') {
+      navigateAuth('/');
+    }
+  }, [authPath, isAuthenticated, navigateAuth]);
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    fetch(`${API_BASE_URL}/api/v1/map/hotspots`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
       .then(res => res.json())
       .then(data => {
         const enriched: Hotspot[] = data.map((h: any) => ({
@@ -33,10 +79,22 @@ const App: React.FC = () => {
           last_updated: 'Just now',
         }));
         setHotspots(enriched);
+      })
+      .catch(() => {
+        setHotspots([]);
       });
-  }, []);
+  }, [token]);
+
+  if (authPath === '/login') {
+    return <LoginPage onNavigate={navigateAuth} />;
+  }
+
+  if (authPath === '/signup') {
+    return <SignUpPage onNavigate={navigateAuth} />;
+  }
 
   return (
+    <ProtectedRoute onRedirect={navigateAuth}>
     <div className="min-h-screen bg-[#020617] text-slate-100 font-sans selection:bg-emerald-500/30 overflow-x-hidden">
       {/* Startup Experience */}
       {!isStartupComplete && (
@@ -66,6 +124,21 @@ const App: React.FC = () => {
             <NavItem label="Neural Scan" active={activePage === 'scan'} onClick={() => setActivePage('scan')} />
             <NavItem label="Command" active={activePage === 'dashboard'} onClick={() => setActivePage('dashboard')} />
             <button onClick={() => setActivePage('dashboard')} className="px-8 py-3 bg-emerald-500 text-black font-black text-[10px] uppercase tracking-[0.3em] hover:bg-white transition-all shadow-[0_10px_30px_rgba(16,185,129,0.2)]">Access Hub</button>
+            <div className="h-8 w-px bg-white/10" />
+            <div className="max-w-36 text-right">
+              <p className="truncate text-[10px] font-black uppercase tracking-[0.25em] text-white">
+                {user?.name}
+              </p>
+              <p className="truncate text-[10px] text-slate-500">{user?.email}</p>
+            </div>
+            <button
+              onClick={logout}
+              className="flex h-10 w-10 items-center justify-center border border-white/10 text-slate-400 transition hover:border-emerald-400/50 hover:text-emerald-300"
+              title="Logout"
+              type="button"
+            >
+              <LogOut className="h-4 w-4" />
+            </button>
           </div>
         </div>
       </nav>
@@ -89,6 +162,7 @@ const App: React.FC = () => {
       </main>
       )}
     </div>
+    </ProtectedRoute>
   );
 };
 
