@@ -1,12 +1,14 @@
-from datetime import datetime, timezone
-
 from fastapi import APIRouter, Depends, HTTPException, status
-from pymongo.errors import DuplicateKeyError, PyMongoError
 
-from ..database import get_users_collection
 from ..dependencies import get_current_user, serialize_user
 from ..models import AuthResponse, LoginRequest, RegisterRequest, UserResponse
 from ..security import create_access_token, hash_password, verify_password
+from ..user_store import (
+    DuplicateUserError,
+    UserStoreUnavailableError,
+    create_user,
+    find_user_by_email,
+)
 
 router = APIRouter(prefix="/api/v1/auth", tags=["Authentication"])
 
@@ -28,29 +30,23 @@ def register(payload: RegisterRequest) -> AuthResponse:
             detail="Name is required.",
         )
 
-    users = get_users_collection()
-    user_doc = {
-        "name": name,
-        "email": email,
-        "password_hash": hash_password(payload.password),
-        "created_at": datetime.now(timezone.utc),
-        "updated_at": datetime.now(timezone.utc),
-    }
-
     try:
-        result = users.insert_one(user_doc)
-    except DuplicateKeyError as exc:
+        user_doc = create_user(
+            name=name,
+            email=email,
+            password_hash=hash_password(payload.password),
+        )
+    except DuplicateUserError as exc:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
             detail="An account with this email already exists.",
         ) from exc
-    except PyMongoError as exc:
+    except UserStoreUnavailableError as exc:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Database unavailable. Please start MongoDB and try again.",
         ) from exc
 
-    user_doc["_id"] = result.inserted_id
     user = serialize_user(user_doc)
     token = create_access_token(subject=user.id, email=user.email)
     return AuthResponse(token=token, user=user)
@@ -58,10 +54,9 @@ def register(payload: RegisterRequest) -> AuthResponse:
 
 @router.post("/login", response_model=AuthResponse)
 def login(payload: LoginRequest) -> AuthResponse:
-    users = get_users_collection()
     try:
-        user_doc = users.find_one({"email": payload.email.lower()})
-    except PyMongoError as exc:
+        user_doc = find_user_by_email(payload.email.lower())
+    except UserStoreUnavailableError as exc:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Database unavailable. Please start MongoDB and try again.",

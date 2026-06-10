@@ -1,10 +1,9 @@
-from bson import ObjectId
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-from .database import get_users_collection
 from .models import UserResponse
 from .security import decode_access_token
+from .user_store import UserStoreUnavailableError, find_user_by_id
 
 bearer_scheme = HTTPBearer(auto_error=False)
 
@@ -29,13 +28,20 @@ def get_current_user(
 
     payload = decode_access_token(credentials.credentials)
     user_id = payload.get("sub")
-    if not user_id or not ObjectId.is_valid(user_id):
+    if not user_id:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid authentication token.",
         )
 
-    user = get_users_collection().find_one({"_id": ObjectId(user_id)})
+    try:
+        user = find_user_by_id(user_id)
+    except UserStoreUnavailableError as exc:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database unavailable. Please start MongoDB and try again.",
+        ) from exc
+
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

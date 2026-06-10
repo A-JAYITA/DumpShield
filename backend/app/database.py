@@ -18,6 +18,9 @@ def get_users_collection() -> Collection:
 
 
 def ensure_indexes() -> None:
+    if settings.auth_storage == "sqlite":
+        return
+
     # Unique email lookup keeps registration fast and prevents duplicate accounts.
     try:
         get_users_collection().create_index("email", unique=True)
