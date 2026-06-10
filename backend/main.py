@@ -4,17 +4,28 @@ from typing import List, Optional
 from fastapi import FastAPI, UploadFile, File, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from app.config import get_settings
+from app.database import ensure_indexes
+from app.routes.auth import router as auth_router
 
 app = FastAPI(title="DUMP SHIELD AI - Hyderabad Smart City Intelligence")
+settings = get_settings()
 
 # CORS for Frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=settings.cors_origins,
+    allow_credentials=settings.cors_origins != ["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(auth_router)
+
+
+@app.on_event("startup")
+def startup_event():
+    ensure_indexes()
 
 # Models
 class Hotspot(BaseModel):

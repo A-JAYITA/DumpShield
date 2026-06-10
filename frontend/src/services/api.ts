@@ -1,6 +1,7 @@
+const configuredApiBaseUrl = import.meta.env.VITE_API_BASE_URL?.trim();
+
 export const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL ??
-  `http://${window.location.hostname}:8000`;
+  configuredApiBaseUrl || `http://${window.location.hostname}:8000`;
 
 interface ApiRequestOptions extends RequestInit {
   token?: string | null;
@@ -32,7 +33,7 @@ export const apiRequest = async <T>(
 
   if (!response.ok) {
     const message = data?.detail ?? 'Something went wrong. Please try again.';
-    throw new Error(message);
+    throw new Error(`${message} (${response.status} ${response.url})`);
   }
 
   return data as T;

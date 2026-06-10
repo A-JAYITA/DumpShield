@@ -1,0 +1,11 @@
+* [33m630549b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Modified a file
+* [33mbf015b5[m added changes
+* [33m6ce44c3[m fix: update frontend dependencies and IntelligencePanel
+* [33m9ec3f9b[m Added requirements.txt for deployment
+[31m|[m * [33m04ed7ac[m[33m ([m[1;31mgitlab/main[m[33m)[m Merge branch 'fix/add-deployment-files' into 'main'
+[31m|[m[31m/[m[33m|[m 
+[31m|[m * [33md393f42[m[33m ([m[1;31mgitlab/fix/add-deployment-files[m[33m)[m fix: add requirements.txt, Dockerfiles and render.yaml for deployment
+[31m|[m[31m/[m  
+* [33mc1b684a[m New DumpShield Project
+* [33mccb1b05[m new project
+* [33m9eccd99[m Initial commit
