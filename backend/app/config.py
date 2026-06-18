@@ -1,8 +1,8 @@
 import os
 from functools import lru_cache
 from typing import List
-
-
+from dotenv import load_dotenv
+load_dotenv()
 class Settings:
     mongodb_uri: str
     mongodb_db_name: str
