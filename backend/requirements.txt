@@ -7,3 +7,4 @@ pymongo
 bcrypt
 PyJWT
 gunicorn
+python-dotenv
